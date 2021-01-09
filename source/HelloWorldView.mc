@@ -16,7 +16,6 @@ class HelloWorldView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc) {
-       setLayout(Rez.Layouts.WatchFace(dc));
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -30,24 +29,27 @@ class HelloWorldView extends WatchUi.View {
 	    var myLocation = info.position.toDegrees();
 	    System.println("Latitude: " + myLocation[0]); // e.g. 38.856147
 	    System.println("Longitude: " + myLocation[1]); // e.g -94.800953
-	    loc = info.position.toGeoString(Position.GEO_DMS);
-	    var view = View.findDrawableById("TimeLabel");
-        view.setText(loc);
+	    loc = info.position.toGeoString(Position.GEO_DEG);
         WatchUi.requestUpdate();
 	}
 
     // Update the view
     function onUpdate(dc) {
-        // Get and show the current time
-        var clockTime = System.getClockTime();
-        var timeString = Lang.format("$1$:$2$", [clockTime.hour, clockTime.min.format("%02d")]);
-        var view = View.findDrawableById("TimeLabel");
-        view.setText(timeString+loc);
-       //dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_RED);
-       // dc.drawText(50, 50, Graphics.FONT_LARGE, lat, Graphics.TEXT_JUSTIFY_LEFT);
-
-        // Call the parent onUpdate function to redraw the layout
+    // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+        
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_PINK);
+        
+        dc.fillCircle(dc.getWidth() / 2,dc.getHeight() / 2, 100);
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_RED);
+        dc.drawText(
+		        dc.getWidth() / 2,                      // gets the width of the device and divides by 2
+		        dc.getHeight() / 2,                     // gets the height of the device and divides by 2
+		        Graphics.FONT_XTINY,                    // sets the font size
+		        loc,                          // the String to display
+		        Graphics.TEXT_JUSTIFY_CENTER            // sets the justification for the text
+                );
+
         System.print(".");
     }
 
